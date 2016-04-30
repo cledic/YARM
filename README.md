@@ -14,16 +14,16 @@ To use this libraries follow this simple guide line.
 5. The new project will be created. Now is time to insert the "**Atmel Software Framework (ASF)**" modules.
 6. Select "**Project -> ASF Wizard**" from the menu, after a while, on the left side of the window will appear a list of the available modules.
    With the help of the "Search for modules" text box, search and then "Add >>" the following modules:
-   :: Generic board support (driver)
-   :: Delay routines (service) [*cycle*]
-   :: EXTINT - External Interrupt (driver) [*callback*]
-   :: PORT - GPIO Pin Control (driver)
-   :: RTC -  Real Time Counter Driver (driver) [*count_callback*]
-   :: SERCOM I2C - Master Mode I2C (driver) [polled]
-   :: SERCOM SPI - Serial Peripheral Interface (driver) [*callback*]
-   :: SERCOM USART - Serial Communication (driver) [*polled*]
-   :: SYSTEMS - Core Systems Driver (driver)
-   :: Standard serial I/O (stdio) (driver)
+   * Generic board support (driver)
+   * Delay routines (service) [*cycle*]
+   * EXTINT - External Interrupt (driver) [*callback*]
+   * PORT - GPIO Pin Control (driver)
+   * RTC -  Real Time Counter Driver (driver) [*count_callback*]
+   * SERCOM I2C - Master Mode I2C (driver) [polled]
+   * SERCOM SPI - Serial Peripheral Interface (driver) [*callback*]
+   * SERCOM USART - Serial Communication (driver) [*polled*]
+   * SYSTEMS - Core Systems Driver (driver)
+   * Standard serial I/O (stdio) (driver)
    *N.B. Some of this modules can be configured using a pop-up menu on the right of the name. The correct value to set is
    inside the square bracket of each modules.*
    Click on "**Apply**". At this point your project is ready to use this libraries.
