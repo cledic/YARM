@@ -28,3 +28,4 @@ http://www.acmesystems.it/yarm
    inside the square bracket of each modules.*
 7. Click on "**Apply**". At this point your project is ready to use this libraries.
 8. Inside the project window, right click on the "**src**" folder inside the "**Solution Explorer**" window on the right. Choose "**Add -> Existing Item**" to copy the source library inside your project.
+9. Remenber to add inside in "**Properties -> Toolchain -> ARM/GNU Linker -> Miscellaneous**" the option: "**-lc -u _printf_float**" to visualize the float value with "*printf*".
