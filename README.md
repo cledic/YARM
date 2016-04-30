@@ -27,4 +27,4 @@ http://www.acmesystems.it/yarm
    * *N.B. Some of this modules can be configured using a pop-up menu on the right of the name. The correct value to set is
    inside the square bracket of each modules.*
 7. Click on "**Apply**". At this point your project is ready to use this libraries.
-8. Inside the project window, right click on the "**srcé**" folder inside the "**Solution Explorer**" window on the right. Choose "**Add -> Existing Item**" to copy the source library inside your project.
+8. Inside the project window, right click on the "**src**" folder inside the "**Solution Explorer**" window on the right. Choose "**Add -> Existing Item**" to copy the source library inside your project.
