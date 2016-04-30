@@ -5,7 +5,7 @@ Library to setup the YARM board from ACME systems
 
 http://www.acmesystems.it/yarm
 
-To use this libraries follow this simple guide line.
+## To use this libraries follow this simple guide line.
 
 1. You must download and install **Atmel Studio 7** from here: http://www.atmel.com/Microsite/atmel-studio/
 2. Launch "Atmel Studio 7" then select "**File -> New -> Project**". Inside the "**New Project**" window click on and select "**GCC C ASF Board Project**" 
@@ -19,7 +19,7 @@ To use this libraries follow this simple guide line.
    * EXTINT - External Interrupt (driver) [*callback*]
    * PORT - GPIO Pin Control (driver)
    * RTC -  Real Time Counter Driver (driver) [*count_callback*]
-   * SERCOM I2C - Master Mode I2C (driver) [polled]
+   * SERCOM I2C - Master Mode I2C (driver) [*polled*]
    * SERCOM SPI - Serial Peripheral Interface (driver) [*callback*]
    * SERCOM USART - Serial Communication (driver) [*polled*]
    * SYSTEMS - Core Systems Driver (driver)
