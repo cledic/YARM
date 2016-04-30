@@ -24,7 +24,6 @@ http://www.acmesystems.it/yarm
    * SERCOM USART - Serial Communication (driver) [*polled*]
    * SYSTEMS - Core Systems Driver (driver)
    * Standard serial I/O (stdio) (driver)
-   
 *N.B. Some of this modules can be configured using a pop-up menu on the right of the name. The correct value to set is
    inside the square bracket of each modules.*
    Click on "**Apply**". At this point your project is ready to use this libraries.
