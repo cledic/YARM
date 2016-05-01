@@ -1,9 +1,7 @@
 # YARM
-YARM development
+YARM development using "**Atmel Studio 7**" and "**AFS**" Library.
 
-Library to setup the YARM board from ACME systems
-
-http://www.acmesystems.it/yarm
+Library to setup the [YARM](http://www.acmesystems.it/yarm) board from [ACME systems](http://www.acmesystems.it)
 
 ## To use this libraries follow this simple guide line.
 
