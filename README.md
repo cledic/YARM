@@ -9,7 +9,7 @@ http://www.acmesystems.it/yarm
 
 1. You must download and install **Atmel Studio 7** from here: http://www.atmel.com/Microsite/atmel-studio/
 2. Launch "Atmel Studio 7" then select "**File -> New -> Project**". Inside the "**New Project**" window click on and select "**GCC C ASF Board Project**" 
-3. Type in the name of your project
+3. Type in the name of your project, and click "**OK**".
 4. A new windows appear. Now you must choose the MCU. Select inside "**Device Family**" pop-up the family "**SAML21**"; then select the "**ATSAML21E18B**" device and click OK.
 5. The new project will be created. Now is time to insert the "**Atmel Software Framework (ASF)**" modules.
 6. Select "**Project -> ASF Wizard**" from the menu, after a while, on the left side of the window will appear a list of the available modules.
