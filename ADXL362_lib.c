@@ -138,7 +138,7 @@ int32_t ADXL362_Init( void)
 	ADXL362_GetDeviceID( &id);
 	
 	//
-		if ( id != ADXL362_DEVD_AD) {
+	if ( id != ADXL362_DEVD_AD) {
 		return 1;
 	}
 	
@@ -158,7 +158,8 @@ int32_t ADXL362_SoftReset( void)
 	
 	ADXL362_Write( ADXL362_REG_SOFT_RESET, &id, 1);
 	delay_ms(1);
-
+	
+	return 0;
 }
 
 int32_t ADXL362_GetDeviceID( uint8_t*id)
