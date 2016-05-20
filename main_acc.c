@@ -52,6 +52,16 @@
 #include "terminal.h"
 #include "LowPower_lib.h"
 
+#include <stdarg.h>
+
+#if USBPRINTF == true
+#define cprintf		myprintf
+#else
+#define cprintf		printf
+#endif
+
+void myprintf( const char* format, ... );
+
 /* ********************************************************************* */
 /* La USART sulla SERCOM3 mi dava problemi con la SPI dell'accelerometro */
 /* anche lei sulla SERCOM3.                                              */
@@ -168,10 +178,8 @@ typedef union
 		float p;
 		float h;
 		float rssi;
-		float x;
-		float y;
-		float z;
-		uint32_t SerialNumber;
+		uint32_t SerialNumber[3];
+		uint8_t activity;
 	} wval;
 } SENSOR_DATA_t;
 
@@ -208,6 +216,19 @@ volatile uint32_t event_state;
 volatile uint32_t ADXL362_Int1_state;
 volatile uint32_t ADXL362_Int2_state;
 
+typedef union
+{
+	uint8_t dt[512];
+	struct {
+		int16_t x[170];
+		int16_t y[170];
+		int16_t z[170];
+	} sval;
+} FIFO_DATA_t;
+
+FIFO_DATA_t fdt;
+#define FIFO_DATA_LEN	(sizeof(FIFO_DATA_t))
+
 //
 volatile uint32_t *ser_ptr1 = (volatile uint32_t *)0x0080A00C;
 volatile uint32_t *ser_ptr2 = (volatile uint32_t *)0x0080A040;
@@ -219,6 +240,7 @@ uint32_t rxError;
 uint32_t rxLength;
 uint32_t txLength;
 uint8_t ADXL362_Status;
+uint8_t ADXL362_Activity;
 
 uint32_t txRepeat;
 volatile uint32_t received_data;
@@ -234,9 +256,13 @@ int main (void)
 
 {
 	ConsoleOn=0;
-	
-	system_init();
 
+	irq_initialize_vectors();
+	cpu_irq_enable();
+
+	system_init();
+	delay_init();
+	
 	/* BOD33 disabled */
 	SUPC->BOD33.reg &= ~SUPC_BOD33_ENABLE;
 
@@ -244,7 +270,10 @@ int main (void)
 	SUPC->VREG.bit.SEL = SUPC_VREG_SEL_BUCK_Val;
 
 	configure_usart();
-		
+
+	/* Configure */
+	udc_start();
+			
 	/* Configure and enable RTC */
 	configure_rtc_count();
 	/* Configure and enable callback */
@@ -264,9 +293,11 @@ int main (void)
 	ADXL362_INT2_ExtIntCallbacks();
 	system_interrupt_enable_global();
 	
+	delay_ms( 5000);
+	
 	TERM_TEXT_WHITE;
 	if ( 1 /*ConsoleOn*/) Term_Banner();	
-	if ( 1 /*ConsoleOn*/) printf("YARM Remota\r\n");	
+	if ( 1 /*ConsoleOn*/) cprintf("YARM Sensor Station\r\n");	
 	TERM_TEXT_DEFAULT;
 	
 	for ( i=0; i<SENSOR_DATA_LEN; i++)
@@ -292,7 +323,7 @@ int main (void)
 		while(1);
 	}
 		
-	ADXL361_GetActivityStatusInterruptMode();
+	ADXL361_GetActivityStatusInterruptFifoMode();
 	ADXL362_Int1_state=ADXL362_Int2_state=0;
 			
 	/* Configure SPI and PowerUp ATA8510 */
@@ -302,14 +333,7 @@ int main (void)
 	YARM_SetIdleMode();
 	if ( ConsoleOn) PrintSysError("YARM_SetIdleMode");
 	delay_ms(1);
-
-	// Programmo la YARM in ricezione 
-//	YARM_SetSystemMode( YARM_RF_RXMODE, TxSequence[ WEATHER_TX_CHNL]); //YARM_SetIdleMode();
-//	if ( ConsoleOn) PrintSysError("YARM_SetSystemMode RXMode");
-
-	YARM_SetPollingMode();
-	if ( ConsoleOn) PrintSysError("YARM_SetPollingMode");
-	
+		
 	/* Ciclo principale */
 	while( 1)
 	{
@@ -329,30 +353,65 @@ int main (void)
 #endif
 #endif	
 
+#if 0
 		/* Evento dalla radio */
 		if ( event_state) {
 			event_state=0;
-			printf("\r\nRicezione da YARM Station\r\n");
+			cprintf("\r\nRicezione da YARM Station\r\n");
 			/* Ricevo dati dalla YARM */
 			RX_FromYarmStation();
 			delay_ms(2500);
 			/* Invio dati alla YARM */
-			printf("\r\nTrasmissione alla YARM Station ");
+			cprintf("\r\nTrasmissione alla YARM Station ");
 			TX_ToYarmStation();
 
 		}
-		if ( ADXL362_Int1_state) {
+#endif
+
+		/* Evento dall'accelerometro: Activity */
+		if ( ADXL362_Int1_state) {			
 			ADXL362_Int1_state=0;
+			ADXL362_GetFifoValue( &fdt.dt[0]);
+			ADXL362_Activity=1;
 			ADXL362_GetStatus( &ADXL362_Status);
-			printf("Activity IRQ [0x%02X] -> ", ADXL362_Status);
+			cprintf("Activity IRQ [0x%02X] -> ", ADXL362_Status);
 		}
-		if ( ADXL362_Int2_state) {
+		/* Evento dall'accelerometro: InActivity */
+		if ( ADXL362_Int2_state) {			 
 			ADXL362_Int2_state=0;
+			ADXL362_GetFifoValue( &fdt.dt[0]);
+			ADXL362_Activity=2;
 			ADXL362_GetStatus( &ADXL362_Status);
-			printf("InActivity IRQ [0x%02X]\r\n", ADXL362_Status);
-		}		
+			cprintf("InActivity IRQ [0x%02X]\r\n", ADXL362_Status);
+		}
+		/* Trasmetto alla YARM Station se c'è stato un movimento */
+		if ( ADXL362_Activity) {
+			/* Invio dati alla YARM */
+			cprintf("\r\nTrasmissione alla YARM Receive Station ");
+			TX_ToYarmStation();	
+			ADXL362_Activity=0;					
+		}
 	}
 
+}
+
+/*
+*/
+void myprintf( const char* format, ... )
+{
+	va_list arglist;
+	
+	va_start( arglist, format );
+	// vprintf( format, arglist );
+	vsprintf( msg, format, arglist);
+	va_end( arglist );
+	
+	//printf("USB: %s\r\n\r\n", msg);
+	
+	while (!udi_cdc_is_tx_ready()) {
+		// Fifo full
+	}
+	udi_cdc_write_buf( msg, strlen(msg));
 }
 
 uint32_t RX_FromYarmStation( void)
@@ -365,7 +424,7 @@ uint32_t RX_FromYarmStation( void)
 	// ****
 	// Gestisco la ricezione dalla YARM Station
 	// Loop waiting EOTA
-	if ( ConsoleOn) printf("RX da YARM Station\r\n");
+	if ( ConsoleOn) cprintf("RX da YARM Station\r\n");
 	
 	rxError=0;
 	ii=0;
@@ -398,7 +457,7 @@ uint32_t RX_FromYarmStation( void)
 
 	// 
 	TERM_TEXT_GREEN;
-	printf("Ricevuti %d bytes [%d] ", i, rxError);
+	cprintf("Ricevuti %d bytes [%d] ", i, rxError);
 	TERM_TEXT_DEFAULT;
 	
 	// copy byte data on sensors data structure
@@ -429,12 +488,12 @@ uint32_t RX_FromYarmStation( void)
 //		printf("RemoteID: 0x%04X%04X%04X\r\n",sd.wval.SerialNumber[0],
 //											  sd.wval.SerialNumber[1],
 //											  sd.wval.SerialNumber[2]);
-		printf("RxError: %d\r\n", rxError);	
+		cprintf("RxError: %d\r\n", rxError);	
 	}
 	
 	//
 	TERM_TEXT_GREEN;
-	printf("RSSI: %d dBm\r\n", (rssiReceived/2)-134);
+	cprintf("RSSI: %d dBm\r\n", (rssiReceived/2)-134);
 	TERM_TEXT_DEFAULT;
 	
 	YARM_SetIdleMode();
@@ -466,13 +525,13 @@ uint32_t TX_ToYarmStation( void)
 	buffer_len = YARM_GetEventBytes( &rd_buffer[0]);
 	if ( ConsoleOn) {
 		if ( buffer_len < 0 ) {
-			printf( "Errore YARM_GetEventBytes %d\r\n", (buffer_len*-1));
+			cprintf( "Errore YARM_GetEventBytes %d\r\n", (buffer_len*-1));
 			} else {
-			printf( "Reg. GETEVENTBYTES: ");
+			cprintf( "Reg. GETEVENTBYTES: ");
 			for ( i=0; i<buffer_len; i++) {
-				printf( "0x%X, ", rd_buffer[i]);
+				cprintf( "0x%X, ", rd_buffer[i]);
 			}
-			printf( "\r\n");
+			cprintf( "\r\n");
 		}
 	}
 		
@@ -483,16 +542,16 @@ uint32_t TX_ToYarmStation( void)
 		return 1;
 	
 	if ( ConsoleOn) {
-		printf("Data to Send [%d]\r\n", txLength);
+		cprintf("Data to Send [%d]\r\n", txLength);
 		for ( i=0; i<txLength;i++)
-			printf(" 0x%0X, ", sd.data[i]);
+			cprintf(" 0x%0X, ", sd.data[i]);
 	
-		printf("\r\n");	
+		cprintf("\r\n");	
 	}
 		
 	if ( ConsoleOn) {
 		TERM_TEXT_GREEN;
-		printf("-------- Transmission request\r\n");
+		cprintf("-------- Transmission request\r\n");
 		TERM_TEXT_DEFAULT;
 	}
 	
@@ -509,7 +568,7 @@ uint32_t TX_ToYarmStation( void)
 	if ( ConsoleOn) PrintSysError("YARM_WriteTxFifo");
 	delay_ms( 100);
 	
-	if ( ConsoleOn) printf("TXLoop Started\r\n");
+	if ( ConsoleOn) cprintf("TXLoop Started\r\n");
 		
 	// Controlla EVENT_IRQ
 	event_state = 0;
@@ -526,19 +585,19 @@ uint32_t TX_ToYarmStation( void)
 	} while (((TxRxEvent[1] & 0x10) == 0)&&(i <40));
 
 	if ( ConsoleOn) {
-		printf("TXLoop Ended at cycle : %d [%d ms]\r\n", i, i*3);
-		printf("TX Ended on service: %d channel: %d\r\n", (TxSequence[seq_idx] & 0x07), (TxSequence[seq_idx]>>4)&0x03);
+		cprintf("TXLoop Ended at cycle : %d [%d ms]\r\n", i, i*3);
+		cprintf("TX Ended on service: %d channel: %d\r\n", (TxSequence[seq_idx] & 0x07), (TxSequence[seq_idx]>>4)&0x03);
 	
 		/* print out YARM state */
 		buffer_len = YARM_GetEventBytes( &rd_buffer[0]);
 		if ( buffer_len < 0 ) {
-			printf( "Error YARM_GetEventBytes %d\r\n", (buffer_len*-1));
+			cprintf( "Error YARM_GetEventBytes %d\r\n", (buffer_len*-1));
 		} else {
-			printf( "Reg. GETEVENTBYTES: ");
+			cprintf( "Reg. GETEVENTBYTES: ");
 			for ( i=0; i<buffer_len; i++) {
-				printf( "0x%X, ", rd_buffer[i]);
+				cprintf( "0x%X, ", rd_buffer[i]);
 			}
-			printf( "\r\n");
+			cprintf( "\r\n");
 		}
 	}
 	
@@ -552,17 +611,9 @@ uint32_t TX_ToYarmStation( void)
 	YARM_SetIdleMode();
 	if ( ConsoleOn) PrintSysError("YARM_SetIdleMode");
 	delay_ms(1);
-
-//	YARM_SetSystemMode( YARM_RF_RXMODE, TxSequence[ WEATHER_TX_CHNL]); //YARM_SetIdleMode();
-//	if ( ConsoleOn) PrintSysError("YARM_SetSystemMode RXMode");
-
-	YARM_SetPollingMode();
-	if ( ConsoleOn) PrintSysError("YARM_SetPollingMode");
-
-	delay_ms( 10);
 	
 	//
-	printf("Trasmissione conclusa\r\n");
+	cprintf("Trasmissione conclusa\r\n");
 	
 	return 1;
 }
@@ -609,27 +660,25 @@ uint32_t Weather_PrepareTxData( void)
 		TERM_TEXT_DEFAULT;
 	}
 	
-	ADXL362_SetMeasureMode();
-	ADXL362_GetAccValues( &x, &y, &z);
+#if 0
+	//
+	ADXL362_GetGxyz2( &x, &y, &z);
 
 	if ( ConsoleOn) {
 		TERM_TEXT_GREEN;
-		printf("AccX:%.2f, AccY: %.2f, AccZ: %.2f\r\n", x, y, z);
+		cprintf("AccX:%.2f, AccY: %.2f, AccZ: %.2f\r\n", x, y, z);
 		TERM_TEXT_DEFAULT;
 	}
+#endif
 
 	sd.wval.rssi=(float)((rssiReceived*1.0f/2.0f)-134.0f);
 	sd.wval.p = p;
 	sd.wval.t = t;
 	sd.wval.h = h;
-	sd.wval.x = x;
-	sd.wval.y = y;
-	sd.wval.z = x;
-	/* MCU ID */
-//	sd.wval.SerialNumber[0]=SerialNumber[0];
-//	sd.wval.SerialNumber[1]=SerialNumber[1];
-//	sd.wval.SerialNumber[2]=SerialNumber[2];
-
+	sd.wval.SerialNumber[0]=SerialNumber[0];
+	sd.wval.SerialNumber[1]=SerialNumber[1];
+	sd.wval.SerialNumber[2]=SerialNumber[2];
+	sd.wval.activity = ADXL362_Activity;
 	//
 	sd.data[31]=checksum( &sd.data[0], 31);
 	
@@ -773,11 +822,11 @@ void PrintSysError( const char*s)
 		TERM_BKGRD_WHITE;
 		TERM_TEXT_RED;
 		//TERM_CURSOR_POS(1,1);
-		printf("Error at %s, ErrorCode: %d\r\n", s, TxRxEvent[5]);
+		cprintf("Error at %s, ErrorCode: %d\r\n", s, TxRxEvent[5]);
 	} else {
 		TERM_TEXT_DEFAULT;
 		//TERM_CURSOR_POS(1,1);
-		printf("Done %s [0x%X 0x%X]\r\n", s, YARM_Events[0], YARM_Events[1]);
+		cprintf("Done %s [0x%X 0x%X]\r\n", s, YARM_Events[0], YARM_Events[1]);
 	}
 	TERM_TEXT_DEFAULT;
 	//TERM_CURSOR_RESTORE;
