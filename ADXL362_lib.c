@@ -567,6 +567,34 @@ void ADXL361_GetActivityStatusPollingMode( void)
 	printf("Finished activity polling.\r\n");
 }
 
+void ADXL361_GetActivityStatusInterruptFifoMode( void)
+{
+	uint8_t regVal;
+	uint8_t detections = 0;
+
+	ADXL362_SetPowerMode( 0);
+	ADXL362_SetOutputRate( ADXL362_ODR_100_HZ);
+
+#if 0
+	/* Set FIFO samples and FIFO Triggered mode */
+	regVal = 128;
+	ADXL362_Write( ADXL362_REG_FIFO_SAMPLES, &regVal, 1);
+	regVal = ADXL362_FIFO_CTL_FIFO_MODE(ADXL362_FIFO_TRIGGERED);
+	ADXL362_Write( ADXL362_REG_FIFO_CONTROL, &regVal, 1);
+#endif
+	
+	ADXL362_FifoSetup( ADXL362_FIFO_TRIGGERED, 128, 0);
+	
+	regVal = ADXL362_ACT_INACT_CTL_LINKLOOP(ADXL362_MODE_LINK);
+	ADXL362_Write( ADXL362_REG_ACT_INACT_CTL, &regVal, 1);
+	ADXL362_SetupActivityDetection(1, 60, 4);
+	ADXL362_SetupInactivityDetection(1, 700, 250);
+	ADXL362_SetPowerMode(1);
+	/*!< Clear ACT and INACT bits by reading the Status Register. */
+	ADXL362_Read( ADXL362_REG_STATUS, &regVal, 1);
+
+}
+
 /*
  * 1. Write 250 decimal (0xFA) to Register 0x20, and write 0 to Register 0x21: sets activity threshold to 250 mg.
  * 2. Write 150 decimal (0x96) to Register 0x23, and write 0 to Register 0x24: sets inactivity threshold to 150 mg.
@@ -631,7 +659,7 @@ int32_t ADXL362_MotionSwitch( int32_t ac_thre, int32_t inac_thre, int32_t inac_t
  */
 int32_t ADXL362_GetFifoValue(uint8_t* pBuffer)
 {
-    uint8_t  buffer[512];
+    uint8_t  buffer[513];
     uint8_t  tmp[2], idx;
     uint16_t index;
     uint16_t len;
@@ -639,6 +667,7 @@ int32_t ADXL362_GetFifoValue(uint8_t* pBuffer)
     ADXL362_Read( ADXL362_REG_FIFO_ENTRIES_L, tmp, 2);
     len = tmp[0]+(tmp[1]<<8);
     
+//	len=512;
     ADXL362_ReadFifo( buffer, len);
 
     //
@@ -742,7 +771,7 @@ int32_t ADXL362_ReadFifo( uint8_t*rxb, int32_t len)
 {
 	uint8_t ptr[513];
 	uint8_t ptr_tx[513];
-	uint8_t i;
+	uint32_t i;
 
     if ( len > 512)
         return 1;
