@@ -583,16 +583,82 @@ void ADXL361_GetActivityStatusInterruptFifoMode( void)
 	ADXL362_Write( ADXL362_REG_FIFO_CONTROL, &regVal, 1);
 #endif
 	
-	ADXL362_FifoSetup( ADXL362_FIFO_TRIGGERED, 128, 0);
+	ADXL362_FifoSetup( ADXL362_FIFO_TRIGGERED, 510, 0);
 	
 	regVal = ADXL362_ACT_INACT_CTL_LINKLOOP(ADXL362_MODE_LINK);
 	ADXL362_Write( ADXL362_REG_ACT_INACT_CTL, &regVal, 1);
-	ADXL362_SetupActivityDetection(1, 60, 4);
-	ADXL362_SetupInactivityDetection(1, 700, 250);
+	ADXL362_SetupActivityDetection(1, 60, 1 /*4*/);
+	ADXL362_SetupInactivityDetection(1, 700, 1 /*250*/);
 	ADXL362_SetPowerMode(1);
 	/*!< Clear ACT and INACT bits by reading the Status Register. */
 	ADXL362_Read( ADXL362_REG_STATUS, &regVal, 1);
 
+}
+
+/**
+ * @brief   Riceve l'array in uscita dalla FIFO e ritorna i valori di X, Y e Z.
+ *
+ * @param   b   puntatore all'array dalla FIFO
+ * @param   x   puntatore all'array per i valori X
+ * @param   y   puntatore all'array per i valori Y
+ * @param   z   puntatore all'array per i valori Z
+ * @param   len numero di triplette X, Y e Z
+ *
+ * Formato dati dalla FIFO:
+ *        11
+ * |GG|SS|109876543210|
+ *  GG
+ *  00  X sample
+ *  01  Y sample
+ *  10  Z sample
+  * SS  Sign extension
+ */
+uint32_t ADXL362_FifoBufferToXYZ( uint8_t*b, int16_t*x, int16_t*y, int16_t*z, uint32_t len)
+{
+    uint32_t i, v;
+    uint8_t tmp;
+
+    if ( len>512 || len==0)
+        return 1;
+
+    /* Allinea il primo byte al valore della X */
+    i=0;
+    while( (b[i+1] & 0xC0) != 0x00) {
+        i+=2;
+    };
+    /* Se è avvenuto l'allineamento, tolgo un elemento dalla conversione. */
+    if ( i)
+        len--;
+
+    v=0;
+    while( i<(len*2) ) {
+		switch( b[i+1] & 0xC0) {
+			case 0x00:		// X sample
+				if ( b[i+1]&0x30)		// Verifico i bit di sign e lo estendo
+					tmp=b[i+1] | 0xC0;
+				else
+					tmp=b[i+1] & 0x3F;
+				x[v] = (int16_t)((tmp<<8) | b[i]);
+			break;
+			case 0x40:		// Y sample
+				if ( b[i+1]&0x30)		// Verifico i bit di sign e lo estendo
+					tmp=b[i+1] | 0xC0;
+				else
+					tmp=b[i+1] & 0x3F;
+				y[v] = (int16_t)((tmp<<8) | b[i]);
+			break;
+			case 0x80:		// Z sample
+				if ( b[i+1]&0x30)		// Verifico i bit di sign e lo estendo
+					tmp=b[i+1] | 0xC0;
+				else
+					tmp=b[i+1] & 0x3F;
+				z[v] = (int16_t)((tmp<<8) | b[i]);
+				v++;
+			break;
+		}
+		//
+		i+=2;
+	}
 }
 
 /*
@@ -659,7 +725,7 @@ int32_t ADXL362_MotionSwitch( int32_t ac_thre, int32_t inac_thre, int32_t inac_t
  */
 int32_t ADXL362_GetFifoValue(uint8_t* pBuffer)
 {
-    uint8_t  buffer[513];
+//    uint8_t  buffer[512+1];
     uint8_t  tmp[2], idx;
     uint16_t index;
     uint16_t len;
@@ -667,13 +733,18 @@ int32_t ADXL362_GetFifoValue(uint8_t* pBuffer)
     ADXL362_Read( ADXL362_REG_FIFO_ENTRIES_L, tmp, 2);
     len = tmp[0]+(tmp[1]<<8);
     
-//	len=512;
-    ADXL362_ReadFifo( buffer, len);
+	if ( len==0)
+		return 0;
+		
+	if ( len>512)
+		len=512;
+		
+    ADXL362_ReadFifo( pBuffer, len);
 
     //
-    for(index = 0; index < len; index++) {
-        pBuffer[index] = buffer[index + 1];
-    }
+//    for(index = 0; index < len; index++) {
+//        pBuffer[index] = buffer[index + 1];
+//    }
     
     return len;
 }
@@ -769,8 +840,8 @@ int32_t ADXL362_Write( uint8_t reg, uint8_t*txb, int32_t len)
  */
 int32_t ADXL362_ReadFifo( uint8_t*rxb, int32_t len)
 {
-	uint8_t ptr[513];
-	uint8_t ptr_tx[513];
+	uint8_t ptr[1024+1];
+	uint8_t ptr_tx[1024+1];
 	uint32_t i;
 
     if ( len > 512)
@@ -782,7 +853,7 @@ int32_t ADXL362_ReadFifo( uint8_t*rxb, int32_t len)
     //
 	spi_select_slave(&ADXL362_spi_master_instance, &ADXL362_slave, true);
 	
-	ADSL362_spi_ret = spi_transceive_buffer_job(&ADXL362_spi_master_instance, ptr_tx, ptr, len+1);
+	ADSL362_spi_ret = spi_transceive_buffer_job(&ADXL362_spi_master_instance, ptr_tx, ptr, (len*2)+1);
 	
 	if ( ADSL362_spi_ret != 0) {
 		spi_select_slave(&ADXL362_spi_master_instance, &ADXL362_slave, false);	
@@ -798,8 +869,8 @@ int32_t ADXL362_ReadFifo( uint8_t*rxb, int32_t len)
 	
 	// copy the returned data to user data
 	// User data is after the 2 added byte.
-	for ( i=1; i<len+1; i++)
-		rxb[i-1]=ptr[i];
+	for ( i=0; i<(len*2); i++)
+		rxb[i]=ptr[i+1];
 	
 	return 0;
 }
