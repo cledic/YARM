@@ -18,7 +18,7 @@
 #define APDS9960_ID_2           0x9C 
 
 /* Misc parameters */
-#define FIFO_PAUSE_TIME         30          // Wait period (ms) between FIFO reads
+#define FIFO_PAUSE_TIME         10          // 30 Wait period (ms) between FIFO reads
 
 /* APDS-9960 register addresses */
 #define APDS9960_ENABLE         0x80
@@ -264,7 +264,7 @@ uint32_t APDS_9660_ReadProximity(uint8_t *val);
 
 /* Gesture methods */
 uint32_t APDS_9660_IsGestureAvailable( uint8_t*gest);
-int32_t APDS_9660_ReadGesture( uint32_t*dir);
+int32_t APDS_9660_ReadGesture( uint8_t*dir);
  
 /* Gesture processing */
 void APDS_9660_ResetGestureParameters( void);
