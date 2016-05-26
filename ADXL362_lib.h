@@ -178,6 +178,6 @@ void ADXL362_SetupInactivityDetection(uint8_t  refOrAbs, uint16_t threshold, uin
 void ADXL361_GetActivityStatusPollingMode( void);
 void ADXL361_GetActivityStatusInterruptMode( void);
 void ADXL361_GetActivityStatusInterruptFifoMode( void);
-
+uint32_t ADXL362_FifoBufferToXYZ( uint8_t*b, int16_t*x, int16_t*y, int16_t*z, uint32_t len);
 
 #endif /* ADSL362_LIB_H_ */
