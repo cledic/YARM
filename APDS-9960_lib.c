@@ -24,7 +24,7 @@ struct				i2c_master_packet packet;
 void APDS_9660_configure_i2c_master(void);
 
 /* Members */
-Gesture_Data_Type GD;  //instanciation from struct 
+Gesture_Data_Type GD;
 int32_t gesture_ud_delta_;
 int32_t gesture_lr_delta_;
 int32_t gesture_ud_count_;
@@ -66,44 +66,26 @@ void APDS_9660_configure_i2c_master(void)
     val[0]=APDS9960_ATIME;
     val[1]=DEFAULT_ATIME;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_ATIME, DEFAULT_ATIME)){
-//        return false;
-//    }
 
     val[0]=APDS9960_WTIME;
     val[1]=DEFAULT_WTIME;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_WTIME, DEFAULT_WTIME)){
-//        return false;
-//    }
 
     val[0]=APDS9960_PPULSE;
     val[1]=DEFAULT_PROX_PPULSE;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_PPULSE, DEFAULT_PROX_PPULSE)){
-//        return false;
-//    }
 
     val[0]=APDS9960_POFFSET_UR;
     val[1]=DEFAULT_POFFSET_UR;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_POFFSET_UR, DEFAULT_POFFSET_UR)){
-//        return false;
-//    }
 
     val[0]=APDS9960_POFFSET_DL;
     val[1]=DEFAULT_POFFSET_DL;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_POFFSET_DL, DEFAULT_POFFSET_DL)){
-//        return false;
-//    }
 
     val[0]=APDS9960_CONFIG1;
     val[1]=DEFAULT_CONFIG1;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONFIG1, DEFAULT_CONFIG1)){
-//        return false;
-//    }
 
     if( APDS_9660_SetLEDDrive( DEFAULT_LDRIVE) ) return 1;
     if( APDS_9660_SetProximityGain( DEFAULT_PGAIN) ) return 1;
@@ -115,16 +97,10 @@ void APDS_9660_configure_i2c_master(void)
     val[0]=APDS9960_CONFIG2;
     val[1]=DEFAULT_CONFIG2;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONFIG2, DEFAULT_CONFIG2) ) {
-//        return false;
-//    }
 
     val[0]=APDS9960_CONFIG3;
     val[1]=DEFAULT_CONFIG3;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONFIG3, DEFAULT_CONFIG3) ) {
-//        return false;
-//    }
     
     if( APDS_9660_SetGestureEnterThresh(DEFAULT_GPENTH) ) return 1;
     if( APDS_9660_SetGestureExitThresh(DEFAULT_GEXTH) ) return 1;
@@ -132,9 +108,6 @@ void APDS_9660_configure_i2c_master(void)
     val[0]=APDS9960_GCONF1;
     val[1]=DEFAULT_GCONF1;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;     
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GCONF1, DEFAULT_GCONF1) ) {
-//        return false;
-//    }
 
     if( APDS_9660_SetGestureGain( DEFAULT_GGAIN) ) return 1;
     if( APDS_9660_SetGestureLEDDrive( DEFAULT_GLDRIVE) ) return 1;
@@ -143,9 +116,6 @@ void APDS_9660_configure_i2c_master(void)
     val[0]=APDS9960_GOFFSET_U;
     val[1]=DEFAULT_GOFFSET;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;         
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GOFFSET_U, DEFAULT_GOFFSET) ) {
-//        return false;
-//    }
 
     val[0]=APDS9960_GOFFSET_D;
     val[1]=DEFAULT_GOFFSET;
@@ -159,72 +129,22 @@ void APDS_9660_configure_i2c_master(void)
     val[1]=DEFAULT_GOFFSET;        
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;   
     
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GOFFSET_D, DEFAULT_GOFFSET) ) {
-//        return false;
-//    }
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GOFFSET_L, DEFAULT_GOFFSET) ) {
-//        return false;
-//    }
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GOFFSET_R, DEFAULT_GOFFSET) ) {
-//        return false;
-//    }
 
     val[0]=APDS9960_GPULSE;
     val[1]=DEFAULT_GPULSE;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;  
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GPULSE, DEFAULT_GPULSE) ) {
-//        return false;
-//    }
 
     val[0]=APDS9960_GCONF3;
     val[1]=DEFAULT_GCONF3;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;  
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GCONF3, DEFAULT_GCONF3) ) {
-//        return false;
-//    }
 
     if( APDS_9660_SetGestureIntEnable( DEFAULT_GIEN) ) return 1;
     
+	APDS_9660_Init_Done=1;
+	
     return 0;
-    
+
 }
-
-//#if 0
-//    /* Gesture config register dump */
-//    uint8_t reg;
-//    uint8_t val;
-//  
-//    for(reg = 0x80; reg <= 0xAF; reg++) {
-//        if( (reg != 0x82) && \
-//            (reg != 0x8A) && \
-//            (reg != 0x91) && \
-//            (reg != 0xA8) && \
-//            (reg != 0xAC) && \
-//            (reg != 0xAD) )
-//        {
-//         val= I2CreadByte(APDS9960_I2C_ADDR, reg);
-//          if(val==ERROR){
-//              printf("ERROR");
-//          }
-//            /*
-//            print(reg, HEX);
-//            print(": 0x");
-//            println(val, HEX);*/
-//        }
-//    }
-//
-//    for(reg = 0xE4; reg <= 0xE7; reg++) {
-//        val= I2CreadByte(APDS9960_I2C_ADDR, reg);
-//     /*   Serial.print(reg, HEX);
-//        Serial.print(": 0x");
-//        Serial.println(val, HEX);*/
-//    }
-//#endif 
-
-  //  return true;
- 
-
-
 
 /**
  * @brief Enables or disables a feature in the APDS-9960
@@ -260,11 +180,6 @@ uint32_t APDS_9660_SetMode(uint8_t mode, uint8_t enable)
     val[0]=APDS9960_ENABLE;
     val[1]=reg_val;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;  
-
-//    /* Write value back to ENABLE register */     
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_ENABLE, reg_val)){
-//        return 1;
-//    } 
         
     return 0;
 }
@@ -273,10 +188,6 @@ uint32_t APDS_9660_GetMode( uint8_t*mode)
 {
 	
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_ENABLE, mode, 1)) return 1;
-//    val= I2CreadByte(APDS9960_I2C_ADDR, APDS9960_ENABLE);
-//    if(val==ERROR){
-//        return ERROR;
-//    }
 
     return 0;
 }
@@ -385,16 +296,10 @@ uint32_t APDS_9660_EnableGestureSensor(uint8_t interrupts)
     val[0]=APDS9960_WTIME;
     val[1]=0xFF;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_WTIME, 0xFF) ) {
-//        return 1;
-//    }
 
     val[0]=APDS9960_PPULSE;
     val[1]=DEFAULT_GESTURE_PPULSE;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if(I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_PPULSE, DEFAULT_GESTURE_PPULSE) ) {
-//        return 1;
-//    }
 
     if( APDS_9660_SetLEDBoost(LED_BOOST_300) ) return 1;
 
@@ -445,29 +350,18 @@ uint32_t APDS_9660_IsGestureAvailable( uint8_t*gest)
     
     /* Read value from GSTATUS register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GSTATUS, &val, 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_GSTATUS);
-//    if( val==ERROR) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out GVALID bit */
     val &= APDS9960_GVALID;
     *gest=val;
 	
-//    /* Return true/false based on GVALID bit */
-//    if( val == 1) {
-//        *gest = 1;
-//    } else {
-//        *gest = 0;
-//    }
-	
 	return 0;
 }
 
-int32_t APDS_9660_ReadGesture( uint32_t*dir)
+int32_t APDS_9660_ReadGesture( uint8_t*dir)
 {
     uint8_t fifo_level = 0;
-    char fifo_data[128];
+    uint8_t fifo_data[128];
 	char *fptr;
 	fptr= fifo_data;
 	  
@@ -493,31 +387,15 @@ int32_t APDS_9660_ReadGesture( uint32_t*dir)
         
         /* Get the contents of the STATUS register. Is data still valid? */
         if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GSTATUS, &gstatus, 1)) return 1;
-//        gstatus=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_GSTATUS);
-//        if( gstatus==ERROR ) {
-//            return ERROR;
-//        }
         /* If we have valid data, read in FIFO */
         if( (gstatus & APDS9960_GVALID) == APDS9960_GVALID ) {
         
             /* Read the current FIFO level */
 			if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GFLVL, &fifo_level, 1)) return 1;
-//            fifo_level=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_GFLVL);
-//            if( fifo_level==ERROR ) {
-//                return ERROR;
-//            }
             
             /* If there's stuff in the FIFO, read it into our data block */                 //NEED TO FIGURE OUT WHAT THIS IS DOING.
-        
             if( fifo_level > 0) {
 				if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GFIFO_U, &fifo_data[0], (fifo_level * 4))) return 1;
-//                check = I2CReadDataBlock(APDS9960_I2C_ADDR,APDS9960_GFIFO_U, 
-//                                                fptr, 
-//                                                (fifo_level * 4) );
-//                
-//                if( check == -1 ) {
-//                    return ERROR;
-//                }              
 
                 /* If at least 1 set of data, sort the data into U/D/L/R */
                 if((fifo_level * 4)  >= 4 ) {
@@ -551,7 +429,7 @@ int32_t APDS_9660_ReadGesture( uint32_t*dir)
             
 			return 0;
         }
-    }
+    }	// while(1)...
    // 
    return 0;
 }
@@ -587,28 +465,19 @@ uint32_t APDS_9660_DisablePower( void)
  * @brief Reads the ambient (clear) light level as a 16-bit value
  *
  * @param[out] val value of the light sensor.
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint32_t APDS_9660_ReadAmbientLight(uint16_t*val)
 {
     uint8_t val_byte[2];
-    //val = 0;
     
     /* Read value from clear channel, low byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CDATAL, &val_byte[0], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CDATAL);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
-    //val = val_byte;
     
     /* Read value from clear channel, high byte register */
    if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CDATAH, &val_byte[1], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CDATAH);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
-    *val = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
+
+   *val = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
     
     return 0;
 }
@@ -617,7 +486,7 @@ uint32_t APDS_9660_ReadAmbientLight(uint16_t*val)
  * @brief Reads the red light level as a 16-bit value
  *
  * @param[out] val value of the light sensor.
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint32_t APDS_9660_ReadRedLight(uint16_t*val)
 {
@@ -626,19 +495,10 @@ uint32_t APDS_9660_ReadRedLight(uint16_t*val)
     
     /* Read value from clear channel, low byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_RDATAL, &val_byte[0], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_RDATAL);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
-    
-    //val = val_byte;
     
     /* Read value from clear channel, high byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_RDATAH, &val_byte[1], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_RDATAH);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
+
     *val = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
     
     return 0;
@@ -648,7 +508,7 @@ uint32_t APDS_9660_ReadRedLight(uint16_t*val)
  * @brief Reads the green light level as a 16-bit value
  *
  * @param[out] val value of the light sensor.
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 
 uint32_t APDS_9660_ReadGreenLight(uint16_t*val)
@@ -658,19 +518,9 @@ uint32_t APDS_9660_ReadGreenLight(uint16_t*val)
     
     /* Read value from clear channel, low byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GDATAL, &val_byte[0], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_GDATAL);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
-    
-    //val = val_byte;
     
     /* Read value from clear channel, high byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GDATAH, &val_byte[1], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_GDATAH);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
 
     *val = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
     
@@ -681,7 +531,7 @@ uint32_t APDS_9660_ReadGreenLight(uint16_t*val)
  * @brief Reads the red light level as a 16-bit value
  *
  * @param[out] val value of the light sensor.
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
 */
 
 uint32_t APDS_9660_ReadBlueLight(uint16_t*val)
@@ -691,19 +541,9 @@ uint32_t APDS_9660_ReadBlueLight(uint16_t*val)
     
     /* Read value from clear channel, low byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_BDATAL, &val_byte[0], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_BDATAL);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
-    
-    //val = val_byte;
     
     /* Read value from clear channel, high byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_BDATAH, &val_byte[1], 1)) return 1;
-//    val_byte=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_BDATAH);
-//    if( val_byte==ERROR) {
-//        return false;
-//    }
 
     *val = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
     
@@ -726,11 +566,6 @@ uint32_t APDS_9660_ReadProximity(uint8_t*val)
     
     /* Read value from proximity data register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_PDATA, val, 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_PDATA);
-//    
-//    if(val==ERROR){
-//        return false;   
-//    }
     
     return 0;
 }
@@ -969,14 +804,7 @@ uint32_t APDS_9660_DecodeGesture( void)
     //uint8_t val;
     
     /* Read value from PILT register */
-   /* if( !wireReadDataByte(APDS9960_PILT, val) ) {
-        val = 0;
-    }*/
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_PILT, thrs, 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_PILT);
-//    if(val==ERROR){
-//        val=0;   
-//    }
     
     return 0;
 }
@@ -994,9 +822,6 @@ uint32_t APDS_9660_DecodeGesture( void)
     val[0] = APDS9960_PILT;
     val[1] = threshold;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_PILT, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1009,14 +834,9 @@ uint32_t APDS_9660_DecodeGesture( void)
  */
 uint8_t APDS_9660_GetProxIntHighThresh( uint8_t*thrs)
 {
-    //uint8_t val;
     
     /* Read value from PIHT register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_PILT, thrs, 1)) return 1;   
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_PILT);
-//    if( val==ERROR ) {
-//        val = 0;
-//    }
     
     return 0;
 }
@@ -1025,7 +845,7 @@ uint8_t APDS_9660_GetProxIntHighThresh( uint8_t*thrs)
  * @brief Sets the high threshold for proximity detection
  *
  * @param[in] threshold the high proximity threshold
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint32_t APDS_9660_SetProxIntHighThresh(uint8_t threshold)
 {
@@ -1034,9 +854,6 @@ uint32_t APDS_9660_SetProxIntHighThresh(uint8_t threshold)
     val[0] = APDS9960_PIHT;
     val[1] = threshold;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_PIHT, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1060,10 +877,6 @@ uint8_t APDS_9660_GetLEDDrive( uint8_t*leddrv)
     
     /* Read value from CONTROL register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONTROL, &val, 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CONTROL);
-//    if(  val == ERROR ){//!wireReadDataByte(APDS9960_CONTROL, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out LED drive bits */
     *leddrv = (val >> 6) & 0x03;//0b00000011;
@@ -1090,24 +903,16 @@ uint32_t APDS_9660_SetLEDDrive(uint8_t drive)
     
     /* Read value from CONTROL register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONTROL, &val[1], 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CONTROL);
-//    if(val==ERROR){
-//        return false;   
-//    }
+
     /* Set bits in register to given value */
-    //drive &= 0b00000011
     drive &= 0x03;
     drive = drive << 6;
-    //val &= 0b00111111;
     val[1] &= 0x3F;
     val[1] |= drive;
     
     /* Write register value back into CONTROL register */
     val[0] = APDS9960_CONTROL;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONTROL, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1130,13 +935,9 @@ uint8_t APDS_9660_GetProximityGain(uint8_t*gain)
     
     /* Read value from CONTROL register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONTROL, &val, 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CONTROL);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONTROL, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out PDRIVE bits */
-    *gain = (val >> 2) & 0x03;//0b00000011;
+    *gain = (val >> 2) & 0x03;
     
     return 0;
 }
@@ -1159,25 +960,16 @@ uint32_t APDS_9660_SetProximityGain(uint8_t drive)
     
     /* Read value from CONTROL register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONTROL, &val[1], 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CONTROL);
-//    if(val==ERROR){
-//        return false;   
-//    }
     /* Set bits in register to given value */
-    //drive &= 0b00000011;
     drive &=0x03;
     drive = drive << 2;
-    //val &= 0b11110011
     val[1] &= 0xF3;
     val[1] |= drive;
     
     /* Write register value back into CONTROL register */
-    /* Write register value back into CONTROL register */
     val[0] = APDS9960_CONTROL;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;		
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONTROL, val) ) {
-//        return false;
-//    }
+
     return 0;
 }
 
@@ -1199,13 +991,9 @@ uint8_t APDS_9660_GetAmbientLightGain(uint8_t*gain)
     
     /* Read value from CONTROL register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONTROL, &val, 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CONTROL);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONTROL, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out ADRIVE bits */
-    *gain = val & 0x03;//0b00000011;
+    *gain = val & 0x03;
     
     return 0;
 }
@@ -1228,24 +1016,16 @@ uint32_t APDS_9660_SetAmbientLightGain(uint8_t drive){
     
     /* Read value from CONTROL register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONTROL, &val[1], 1)) return 1;
-//    val=I2CreadByte(APDS9960_I2C_ADDR,APDS9960_CONTROL);
-//    if(val==ERROR){
-//        return false;   
-//    }
+
     /* Set bits in register to given value */
-    //drive &= 0b00000011;
     drive &=0x03;
     drive = drive << 2;
-    //val &=0b11111100
     val[1] &= 0xF3;
     val[1] |= drive;
     
     /* Write register value back into CONTROL register */
     val[0]=APDS9960_CONTROL;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONTROL, val) ) {
-//        return false;
-//    }
   
 	return 0;
 }
@@ -1268,13 +1048,9 @@ uint8_t APDS_9660_GetLEDBoost( uint8_t*boost)
     
     /* Read value from CONFIG2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONFIG2, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_CONFIG2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONFIG2, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out LED_BOOST bits */
-    *boost = (val >> 4) & 0x03;//0b00000011;
+    *boost = (val >> 4) & 0x03;
     
     return 0;
 }
@@ -1297,23 +1073,16 @@ uint32_t APDS_9660_SetLEDBoost(uint8_t boost)
     
     /* Read value from CONFIG2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONFIG2, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_CONFIG2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONFIG2, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    boost &= 0x03;//0b00000011;
+    boost &= 0x03;
     boost = boost << 4;
-    val[1] &= 0xCF;//0b11001111;
+    val[1] &= 0xCF;
     val[1] |= boost;
     
     /* Write register value back into CONFIG2 register */
     val[0]=APDS9960_CONFIG2;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONFIG2, val)){//!wireWriteDataByte(APDS9960_CONFIG2, val) ) {
-//        return false;
-//    }
     
     return 0;
 }    
@@ -1330,13 +1099,9 @@ uint8_t APDS_9660_GetProxGainCompEnable( uint8_t*gain)
     
     /* Read value from CONFIG3 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONFIG3, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_CONFIG3); 
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONFIG3, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out PCMP bits */
-    *gain = (val >> 5) & 0x01;//0b00000001;
+    *gain = (val >> 5) & 0x01;
     
     return 0;
 }
@@ -1353,23 +1118,16 @@ uint8_t APDS_9660_GetProxGainCompEnable( uint8_t*gain)
     
     /* Read value from CONFIG3 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONFIG3, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_CONFIG3);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONFIG3, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    enable &= 0x01;//0b00000001;
+    enable &= 0x01;
     enable = enable << 5;
-    val[1] &= 0xDF;//0b11011111;
+    val[1] &= 0xDF;
     val[1] |= enable;
     
     /* Write register value back into CONFIG3 register */
     val[0]=APDS9960_CONFIG3;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_CONFIG3, val)){//!wireWriteDataByte(APDS9960_CONFIG3, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1393,13 +1151,9 @@ uint8_t APDS_9660_GetProxPhotoMask( uint8_t*proxym)
     
     /* Read value from CONFIG3 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONFIG3, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_CONFIG3);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONFIG3, val) ) {
-//        return ERROR;
-//    }
     
     /* Mask out photodiode enable mask bits */
-    *proxym = val & 0x0F;//0b00001111;
+    *proxym = val & 0x0F;
     
     return 0;
 }
@@ -1423,23 +1177,15 @@ uint32_t APDS_9660_SetProxPhotoMask(uint8_t mask)
     
     /* Read value from CONFIG3 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_CONFIG3, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_CONFIG3);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_CONFIG3, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    mask &= 0x0F;//0b00001111;
-    val[1] &= 0xF0;//0b11110000;
+    mask &= 0x0F;
+    val[1] &= 0xF0;
     val[1] |= mask;
     
     /* Write register value back into CONFIG3 register */
     val[0]=APDS9960_CONFIG3;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    I2CwriteByte(APDS9960_I2C_ADDR, APDS9960_CONFIG3, val);
-//    if( val == ERROR){//!wireWriteDataByte(APDS9960_CONFIG3, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1455,10 +1201,6 @@ uint8_t APDS_9660_GetGestureEnterThresh( uint8_t*thrs)
     
     /* Read value from GPENTH register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GPENTH, thrs, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GPENTH);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GPENTH, val) ) {
-//        val = 0;
-//    }
     
     return 0;
 }
@@ -1476,9 +1218,6 @@ uint32_t APDS_9660_SetGestureEnterThresh(uint8_t threshold)
     val[0]=APDS9960_GPENTH;
     val[1]=threshold;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if( I2CwriteByte(APDS9960_I2C_ADDR, APDS9960_GPENTH, threshold)){;//!wireWriteDataByte(APDS9960_GPENTH, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1487,17 +1226,13 @@ uint32_t APDS_9660_SetGestureEnterThresh(uint8_t threshold)
  * @brief Gets the exit proximity threshold for gesture sensing
  *
  * @param[out] Current exit proximity threshold.
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint8_t APDS_9660_GetGestureExitThresh( uint8_t*thrs)
 {
     
     /* Read value from GEXTH register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GEXTH, thrs, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GEXTH);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GEXTH, val) ) {
-//        val = 0;
-//    }
     
     return 0;
 }
@@ -1515,9 +1250,6 @@ uint32_t APDS_9660_SetGestureExitThresh(uint8_t threshold)
     val[0]=APDS9960_GEXTH;
     val[1]=threshold;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR, APDS9960_GEXTH, threshold)){//!wireWriteDataByte(APDS9960_GEXTH, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1540,13 +1272,9 @@ uint8_t APDS_9660_GetGestureGain( uint8_t*gain)
     
     /* Read value from GCONF2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF2, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF2, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out GGAIN bits */
-    *gain = (val >> 5) & 0x03;//0b00000011;
+    *gain = (val >> 5) & 0x03;
     
     return 0;
 }
@@ -1569,23 +1297,16 @@ uint32_t APDS_9660_SetGestureGain(uint8_t gain)
     
     /* Read value from GCONF2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF2, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF2, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    gain &= 0x03;//0b00000011;
+    gain &= 0x03;
     gain = gain << 5;
-    val[1] &= 0x9F;//0b10011111;
+    val[1] &= 0x9F;
     val[1] |= gain;
     
     /* Write register value back into GCONF2 register */
     val[0]=APDS9960_GCONF2;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR, APDS9960_GCONF2, val)){//!wireWriteDataByte(APDS9960_GCONF2, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1608,13 +1329,9 @@ uint8_t APDS_9660_GetGestureLEDDrive( uint8_t*leddrv)
     
     /* Read value from GCONF2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF2, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF2, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out GLDRIVE bits */
-    *leddrv = (val >> 3) & 0x03;//0b00000011;
+    *leddrv = (val >> 3) & 0x03;
     
     return 0;
 }
@@ -1637,23 +1354,16 @@ uint32_t APDS_9660_SetGestureLEDDrive(uint8_t drive)
     
     /* Read value from GCONF2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF2, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF2, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    drive &= 0x03;//0b00000011;
+    drive &= 0x03;
     drive = drive << 3;
-    val[1] &= 0xE7;//0b11100111;
+    val[1] &= 0xE7;
     val[1] |= drive;
     
     /* Write register value back into GCONF2 register */
     val[0]=APDS9960_GCONF2;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;
-//    if( I2CwriteByte(APDS9960_I2C_ADDR, APDS9960_GCONF2, val)){//!wireWriteDataByte(APDS9960_GCONF2, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1680,13 +1390,9 @@ uint8_t APDS_9660_GetGestureWaitTime(uint8_t*time)
     
     /* Read value from GCONF2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF2, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF2, val) ) {
-//        return ERROR;
-//    }
     
     /* Mask out GWTIME bits */
-    *time = val & 0x07;//0b00000111;
+    *time = val & 0x07;
     
     return 0;
 }
@@ -1713,28 +1419,16 @@ uint32_t APDS_9660_SetGestureWaitTime(uint8_t time)
     
     /* Read value from GCONF2 register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF2, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF2);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF2, val) ) {
-//        return false;
-//    }
-    /* if( !wireReadDataByte(APDS9960_GCONF2, val) ) {
-        return false;
-    } */
     
     /* Set bits in register to given value */
-    time &= 0x07;//0b00000111;
-    val[1] &= 0xF8;//0b11111000;
+    time &= 0x07;
+    val[1] &= 0xF8;
     val[1] |= time;
     
     /* Write register value back into GCONF2 register */
     val[0]=APDS9960_GCONF2;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GCONF2,val)){//!wireWriteDataByte(APDS9960_GCONF2, val) ) {
-//        return false;
-//    }
-    /*if( !wireWriteDataByte(APDS9960_GCONF2, val) ) {
-        return false;
-    }*/
+
     return 0;
 }
 
@@ -1751,18 +1445,10 @@ uint32_t APDS_9660_GetLightIntLowThreshold(uint16_t*threshold)
     
     /* Read value from ambient light low threshold, low byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_AILTL, &val_byte[0], 1)) return 1;
-//    val_byte = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_AILTL);
-//    if( val_byte == ERROR){//!wireReadDataByte(APDS9960_AILTL, val_byte) ) {
-//        return false;
-//    }
-//    threshold = val_byte;
     
     /* Read value from ambient light low threshold, high byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_AILTH, &val_byte[1], 1)) return 1;
-//    val_byte = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_AILTH);
-//    if( val_byte == ERROR){//!wireReadDataByte(APDS9960_AILTH, val_byte) ) {
-//        return false;
-//    }
+
     *threshold = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
     
     return 0;
@@ -1788,17 +1474,11 @@ uint32_t APDS_9660_SetLightIntLowThreshold(uint16_t threshold)
     val[0]=APDS9960_AILTL;
     val[1]=val_low;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_AILTL,val_low)){//!wireWriteDataByte(APDS9960_AILTL, val_low) ) {
-//        return false;
-//    }
     
     /* Write high byte */
     val[0]=APDS9960_AILTH;
     val[1]=val_high;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;		
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_AILTH,val_high)){//!wireWriteDataByte(APDS9960_AILTH, val_high) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1816,18 +1496,10 @@ uint32_t APDS_9660_GetLightIntHighThreshold(uint16_t*threshold)
     
     /* Read value from ambient light high threshold, low byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_AIHTL, &val_byte[0], 1)) return 1;
-//    val_byte = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_AIHTL);
-//    if( val_byte == ERROR){//!wireReadDataByte(APDS9960_AIHTL, val_byte) ) {
-//        return false;
-//    }
-    //threshold = val_byte;
     
     /* Read value from ambient light high threshold, high byte register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_AIHTH, &val_byte[1], 1)) return 1;	
-//    val_byte = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_AIHTH);
-//    if( val_byte == ERROR){//!wireReadDataByte(APDS9960_AIHTH, val_byte) ) {
-//        return false;
-//    }
+
     *threshold = (uint16_t)(val_byte[0] + (val_byte[1] << 8));
     
     return 0;
@@ -1853,17 +1525,11 @@ uint32_t APDS_9660_SetLightIntHighThreshold(uint16_t threshold)
     val[0]=APDS9960_AIHTL;
     val[1]=val_low;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_AIHTL,val_low)){//!wireWriteDataByte(APDS9960_AIHTL, val_low) ) {
-//        return false;
-//    }
     
     /* Write high byte */
     val[0]=APDS9960_AIHTH;
     val[1]=val_high;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;		
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_AIHTH,val_high)){//!wireWriteDataByte(APDS9960_AIHTH, val_high) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1876,14 +1542,9 @@ uint32_t APDS_9660_SetLightIntHighThreshold(uint16_t threshold)
  */
 uint32_t APDS_9660_GetProximityIntLowThreshold( uint8_t*threshold)
 {
-    //threshold = 0;
     
     /* Read value from proximity low threshold register */
 	if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_PILT, threshold, 1)) return 1;
-//    threshold = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_PILT);
-//    if( threshold == ERROR){//!wireReadDataByte(APDS9960_PILT, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1902,9 +1563,6 @@ uint32_t APDS_9660_SetProximityIntLowThreshold(uint8_t threshold)
     val[0] = APDS9960_PILT;
     val[1] = threshold;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_PILT,threshold)){//!wireWriteDataByte(APDS9960_PILT, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1917,14 +1575,9 @@ uint32_t APDS_9660_SetProximityIntLowThreshold(uint8_t threshold)
  */
 uint32_t APDS_9660_GetProximityIntHighThreshold(uint8_t*threshold)
 {
-    //threshold = 0;
     
     /* Read value from proximity low threshold register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_PIHT, threshold, 1)) return 1;
-//    threshold = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_PIHT);
-//    if( threshold == ERROR){//!wireReadDataByte(APDS9960_PIHT, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1943,9 +1596,6 @@ uint32_t APDS_9660_SetProximityIntHighThreshold(uint8_t threshold)
     val[0] = APDS9960_PIHT;
     val[1] = threshold;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_PIHT,threshold)){//!wireWriteDataByte(APDS9960_PIHT, threshold) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -1962,13 +1612,9 @@ uint8_t APDS_9660_GetAmbientLightIntEnable( uint8_t*enable)
     
     /* Read value from ENABLE register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_ENABLE, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_ENABLE);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_ENABLE, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out AIEN bit */
-    *enable = (val >> 4) & 0x01;//0b00000001;
+    *enable = (val >> 4) & 0x01;
     
     return 0;
 }
@@ -1985,23 +1631,16 @@ uint32_t APDS_9660_SetAmbientLightIntEnable(uint8_t enable)
     
     /* Read value from ENABLE register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_ENABLE, &val_bytes[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_ENABLE);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_ENABLE, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    enable &= 0x01;//0b00000001;
+    enable &= 0x01;
     enable = enable << 4;
-    val_bytes[1] &= 0xEF;//0b11101111;
+    val_bytes[1] &= 0xEF;
     val_bytes[1] |= enable;
     
     /* Write register value back into ENABLE register */
     val_bytes[0] = APDS9960_ENABLE;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val_bytes[0], 2)) return 1;	    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_ENABLE,val)){//!wireWriteDataByte(APDS9960_ENABLE, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -2010,7 +1649,7 @@ uint32_t APDS_9660_SetAmbientLightIntEnable(uint8_t enable)
  * @brief Gets if proximity interrupts are enabled or not
  *
  * @param[out] 1 if interrupts are enabled, 0 if not.
- * @return 1 if operation successful. 0 otherwise. 
+ * @return 0 if operation successful. 1 otherwise. 
  */
 uint8_t APDS_9660_GetProximityIntEnable( uint8_t*enable)
 {
@@ -2018,13 +1657,9 @@ uint8_t APDS_9660_GetProximityIntEnable( uint8_t*enable)
     
     /* Read value from ENABLE register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_ENABLE, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_ENABLE);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_ENABLE, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out PIEN bit */
-    *enable = (val >> 5) & 0x01;//0b00000001;
+    *enable = (val >> 5) & 0x01;
     
     return 0;
 }
@@ -2033,7 +1668,7 @@ uint8_t APDS_9660_GetProximityIntEnable( uint8_t*enable)
  * @brief Turns proximity interrupts on or off
  *
  * @param[in] enable 1 to enable interrupts, 0 to turn them off
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint32_t APDS_9660_SetProximityIntEnable(uint8_t enable)
 {
@@ -2041,23 +1676,16 @@ uint32_t APDS_9660_SetProximityIntEnable(uint8_t enable)
     
     /* Read value from ENABLE register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_ENABLE, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_ENABLE);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_ENABLE, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    enable &= 0x01;//0b00000001;
+    enable &= 0x01;
     enable = enable << 5;
-    val[1] &= 0xDF;//0b11011111;
+    val[1] &= 0xDF;
     val[1] |= enable;
     
     /* Write register value back into ENABLE register */
     val[0] = APDS9960_ENABLE;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_ENABLE,val)){//!wireWriteDataByte(APDS9960_ENABLE, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -2065,7 +1693,8 @@ uint32_t APDS_9660_SetProximityIntEnable(uint8_t enable)
 /**
  * @brief Gets if gesture interrupts are enabled or not
  *
- * @return 1 if interrupts are enabled, 0 if not. 0xFF on error.
+ * @param[out] 1 if interrupts are enabled, 0 if not.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint8_t APDS_9660_GetGestureIntEnable( uint8_t*enable)
 {
@@ -2073,13 +1702,9 @@ uint8_t APDS_9660_GetGestureIntEnable( uint8_t*enable)
     
     /* Read value from GCONF4 register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF4, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF4);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF4, val) ) {
-//        return ERROR;
-//    }
     
     /* Shift and mask out GIEN bit */
-    *enable = (val >> 1) & 0x01;//0b00000001;
+    *enable = (val >> 1) & 0x01;
     
     return 0;
 }
@@ -2088,7 +1713,7 @@ uint8_t APDS_9660_GetGestureIntEnable( uint8_t*enable)
  * @brief Turns gesture-related interrupts on or off
  *
  * @param[in] enable 1 to enable interrupts, 0 to turn them off
- * @return True if operation successful. False otherwise.
+ * @return 0 if operation successful. 1 otherwise.
  */
 uint32_t APDS_9660_SetGestureIntEnable(uint8_t enable)
 {
@@ -2096,23 +1721,16 @@ uint32_t APDS_9660_SetGestureIntEnable(uint8_t enable)
     
     /* Read value from GCONF4 register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF4, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF4);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF4, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    enable &= 0x01;//0b00000001;
+    enable &= 0x01;
     enable = enable << 1;
-    val[1] &= 0xFD;//0b11111101;
+    val[1] &= 0xFD;
     val[1] |= enable;
     
     /* Write register value back into GCONF4 register */
     val[0] = APDS9960_GCONF4;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GCONF4,val)){//!wireWriteDataByte(APDS9960_GCONF4, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -2127,10 +1745,6 @@ uint32_t APDS_9660_ClearAmbientLightInt( void)
     uint8_t throwaway;
     
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_AICLEAR, &throwaway, 1)) return 1;
-//    throwaway = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_AICLEAR);
-//    if( throwaway == ERROR){//!wireReadDataByte(APDS9960_AICLEAR, throwaway) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -2145,10 +1759,6 @@ uint32_t APDS_9660_ClearProximityInt( void)
     uint8_t throwaway;
     
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_PICLEAR, &throwaway, 1)) return 1;
-//    throwaway = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_PICLEAR);
-//    if( throwaway == ERROR){//!wireReadDataByte(APDS9960_PICLEAR, throwaway) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -2164,13 +1774,9 @@ uint8_t APDS_9660_GetGestureMode( uint8_t*gesture)
     
     /* Read value from GCONF4 register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF4, &val, 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF4);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF4, val) ) {
-//        return ERROR;
-//    }
     
     /* Mask out GMODE bit */
-    *gesture =  val & 0x01;//0b00000001;
+    *gesture =  val & 0x01;
     
     return 0;
 }
@@ -2187,22 +1793,15 @@ uint32_t APDS_9660_SetGestureMode(uint8_t mode)
     
     /* Read value from GCONF4 register */
     if ( APDS_9660_read_RegisterMultiValue( &i2c_master_instance, APDS9960_GCONF4, &val[1], 1)) return 1;
-//    val = I2CreadByte(APDS9960_I2C_ADDR, APDS9960_GCONF4);
-//    if( val == ERROR){//!wireReadDataByte(APDS9960_GCONF4, val) ) {
-//        return false;
-//    }
     
     /* Set bits in register to given value */
-    mode &= 0x01;//0b00000001;
-    val[1] &= 0xFE;//0b11111110;
+    mode &= 0x01;
+    val[1] &= 0xFE;
     val[1] |= mode;
     
     /* Write register value back into GCONF4 register */
     val[0] = APDS9960_GCONF4;
     if ( APDS_9660_write_RegisterMultiValue( &i2c_master_instance, &val[0], 2)) return 1;	    
-//    if( I2CwriteByte(APDS9960_I2C_ADDR,APDS9960_GCONF4,val)){//!wireWriteDataByte(APDS9960_GCONF4, val) ) {
-//        return false;
-//    }
     
     return 0;
 }
@@ -2263,66 +1862,3 @@ int32_t APDS_9660_read_RegisterMultiValue( struct i2c_master_module*module, uint
 }
 
 
-
-
-
-//#if 0
-//int glibr::I2CwriteByte(char address, char subAddress, char data)
-//{   
-//    int ret;
-//    char cmd[2] = {subAddress, data};
-//    ret=i2c.write(address<<1, cmd, 2);  //if ret is 1, then not acked.
-//    return ret;
-//}
-//
-//uint8_t glibr::I2CreadByte(char address, char subAddress)
-//{
-//    char data; // store the register data
-//    
-//    if(i2c.write(address<<1, &subAddress, 1, true)){
-//        return ERROR;   //7 bit   //not acked
-//    } 
-//    
-//    if(i2c.read(address<<1, &data, 1)){   
-//        return ERROR;
-//    }
-//    //i2c.read(address<<1, &data, 1);
-//    return data;
-//
-//}
-//
-//
-//// * @brief Reads a block (array) of bytes from the I2C device and register
-//// *
-//// * @param[in] reg the register to read from
-//// * @param[out] val pointer to the beginning of the data
-//// * @param[in] len number of bytes to read
-//// * @return Number of bytes read. -1 on read error.
-//// */
-//int glibr::I2CReadDataBlock(char address, char subAddress, char *data, unsigned int len)
-//{
-//  //  unsigned char i = 0;
-//
-//    /* Indicate which register we want to read from */
-//   
-//      if(i2c.write(address<<1, &subAddress, 1, true)){
-//        return -1;   //7 bit   //not acked
-//      } 
-//    
-//    /* Read block data */
-//     
-//    if(i2c.read(address<<1, data, len)){
-//        return -1;
-//    }
-//    
-//    return 1;
-//    //Wire.requestFrom(APDS9960_I2C_ADDR, len);
-//    /*while (Wire.available()) {
-//        if (i >= len) {
-//            return -1;
-//        }
-//        val[i] = Wire.read();
-//        i++;
-//    }*/
-//}
-//#endif
