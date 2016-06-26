@@ -108,6 +108,7 @@ uint32_t Daisy24_LCD_Init(void)
 	
 	Daisy24_LCD_Clear();
 	Daisy24_LCD_SetCursor( 0, 0);
+	mn.init=0;
 	
     return 0;
 }
@@ -223,7 +224,10 @@ uint32_t Daisy24_LCD_WriteString( char*s)
     
     for ( i=0; i<l; i++)
         Daisy24_LCD_WriteChar( s[i]);
-    
+
+	for( ; i<16;i++)
+		Daisy24_LCD_WriteChar( ' ');
+		
     return 0;
 } 
 
@@ -303,7 +307,8 @@ uint32_t Daisy24_LCD_MonitorInit( char*s1, char*s2, uint32_t m)
         Daisy24_LCD_WriteString(mn.p1);
         Daisy24_LCD_SetCursor( 0, 1);        
         Daisy24_LCD_WriteString(mn.p2);
-
+		
+		return 0;
     } else
         return 1;
 }
@@ -431,6 +436,19 @@ uint32_t Daisy24_LCD_MonitorUpdate( uint32_t*f)
 	// update the loop counter
 	*f=c;
 	
+	return 0;
+}
+
+/**
+ * \brief LCD Monitor Stop, stop the monitor activity
+ *
+ * \param[out]	f return the number of time the strings loop
+ * \retval  0 OK, 1 Error
+ * 
+ */
+uint32_t Daisy24_LCD_MonitorStop( void)
+{
+	mn.init==0;
 	return 0;
 }
 
