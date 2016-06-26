@@ -24,6 +24,7 @@ uint32_t Daisy24_LCD_BkLightOff(void);
 uint32_t Daisy24_LCD_BkLightOn(void);
 uint32_t Daisy24_LCD_MonitorInit( char*s1, char*s2, uint32_t m);
 uint32_t Daisy24_LCD_MonitorUpdate( uint32_t*);
+uint32_t Daisy24_LCD_MonitorStop( void);
 
 uint32_t Daisy24_PB_Status( uint32_t*p);
 
