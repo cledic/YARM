@@ -22,11 +22,14 @@ void ChkSleepOn( void)
 
 void ChkSleepOff( void)
 {
+#if 0
 	struct port_config pin_conf;
-	
+
+	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
+	port_pin_set_config(PIN_PA08, &pin_conf);
+#endif
+
 	/* PA08 as ChkSleep */
-//	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
-//	port_pin_set_config(PIN_PA08, &pin_conf);
 	port_pin_set_output_level( PIN_PA08, false);
 }
 
