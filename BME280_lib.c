@@ -83,7 +83,7 @@ int32_t BME280_Get_Temperature( float*t)
 	uint32_t v;
 	int32_t var1, var2;
 	float T;
-	int32_t mode, status;
+	int32_t mode;
 	
 	if ( BME280_Init_Done==0)
 		return 1;
@@ -127,7 +127,7 @@ int32_t BME280_Get_Pressure( float*p)
 {
 	uint32_t v;
 	int64_t var1, var2, P;
-	int32_t mode, status;
+	int32_t mode;
 	
 	if ( BME280_Init_Done==0)
 		return 1;
@@ -184,7 +184,7 @@ int32_t BME280_Get_Humidity( float*h)
 	uint32_t v;
 	int32_t v_x1_u32r;
 	float H;
-	int32_t mode, status;
+	int32_t mode;
 	
 	if ( BME280_Init_Done==0)
 		return 1;
@@ -232,7 +232,7 @@ int32_t BME280_Get_Humidity( float*h)
 int32_t BME280_GetRawValues( uint32_t*press, uint32_t*temp, uint32_t*hum)
 {
 	uint32_t v;
-	int32_t mode, status;
+	int32_t mode;
 	
 	ret = BME280_GetSensorMode( &mode);
 	if ( ret != 0)
@@ -278,7 +278,7 @@ int32_t BME280_GetRawValues( uint32_t*press, uint32_t*temp, uint32_t*hum)
 int32_t BME280_Get_AllValues( float*p, float*t, float*h)
 {
 	uint32_t v;
-	int32_t mode, status;
+	int32_t mode;
 	int32_t var1, var2;
 	int64_t var3, var4, P;
 	int32_t v_x1_u32r;
@@ -361,7 +361,7 @@ int32_t BME280_Get_AllValues( float*p, float*t, float*h)
 int32_t BME280_Get_SingleValue( uint32_t m, float*value)
 {
 	uint32_t v;
-	int32_t mode, status;
+	int32_t mode;
 	int32_t var1, var2;
 	int64_t var3, var4, P;
 	int32_t v_x1_u32r;
