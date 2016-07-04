@@ -149,6 +149,7 @@ int32_t ADXL362_Init( void)
 	id=0;
 	ADXL362_GetRevID( &id);		// 0x01
 	
+	ADXL362_SetRange( ADXL362_RANGE_2G);
 	return 0;
 }
 
@@ -217,7 +218,6 @@ int32_t ADXL362_SetMeasureMode( void)
 int32_t ADXL362_GetAccValues( float*x, float*y, float*z)
 {
 	uint8_t rxbuff[3];
-	int16_t tmp;
 	
 	rxbuff[0] = 0x02;
 	ADXL362_Write( ADXL362_REG_POWER_CTL, rxbuff, 1);
@@ -516,7 +516,6 @@ void ADXL362_SetupInactivityDetection(uint8_t  refOrAbs, uint16_t threshold, uin
 void ADXL361_GetActivityStatusInterruptMode( void)
 {
 	uint8_t regVal;
-	uint8_t detections = 0;
 
 	ADXL362_SetPowerMode( 0);
 	ADXL362_SetOutputRate( ADXL362_ODR_100_HZ);
@@ -570,7 +569,6 @@ void ADXL361_GetActivityStatusPollingMode( void)
 void ADXL361_GetActivityStatusInterruptFifoMode( void)
 {
 	uint8_t regVal;
-	uint8_t detections = 0;
 
 	ADXL362_SetPowerMode( 0);
 	ADXL362_SetOutputRate( ADXL362_ODR_100_HZ);
@@ -659,6 +657,8 @@ uint32_t ADXL362_FifoBufferToXYZ( uint8_t*b, int16_t*x, int16_t*y, int16_t*z, ui
 		//
 		i+=2;
 	}
+	//
+	return 0;
 }
 
 /*
@@ -726,8 +726,7 @@ int32_t ADXL362_MotionSwitch( int32_t ac_thre, int32_t inac_thre, int32_t inac_t
 int32_t ADXL362_GetFifoValue(uint8_t* pBuffer)
 {
 //    uint8_t  buffer[512+1];
-    uint8_t  tmp[2], idx;
-    uint16_t index;
+    uint8_t  tmp[2];
     uint16_t len;
 
     ADXL362_Read( ADXL362_REG_FIFO_ENTRIES_L, tmp, 2);
