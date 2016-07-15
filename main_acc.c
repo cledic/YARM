@@ -555,17 +555,16 @@ uint32_t TX_ToYarmStation( void)
 		TERM_TEXT_DEFAULT;
 	}
 	
-	YARM_SetSystemMode( YARM_RF_TXMODE, TxSequence[ WEATHER_TX_CHNL]);
-	if ( ConsoleOn) PrintSysError("YARM_SetSystemMode TXMode");
-	delay_ms( 100);
-	
 	YARM_WriteTxPreamble( YARM_WriteTxPreambleBuffer_LEN, &TxPreambleBuffer[0]);
 	if ( ConsoleOn) PrintSysError("YARM_WriteTxPreamble");
-	
 	delay_us( 100);
 
 	YARM_WriteTxFifo( txLength, sd.data);
 	if ( ConsoleOn) PrintSysError("YARM_WriteTxFifo");
+	delay_ms( 100);
+
+	YARM_SetSystemMode( YARM_RF_TXMODE, TxSequence[ WEATHER_TX_CHNL]);
+	if ( ConsoleOn) PrintSysError("YARM_SetSystemMode TXMode");
 	delay_ms( 100);
 	
 	if ( ConsoleOn) cprintf("TXLoop Started\r\n");
