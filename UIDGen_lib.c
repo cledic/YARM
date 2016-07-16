@@ -16,7 +16,11 @@ struct aes_config g_aes_cfg;
 /* AES instance*/
 struct aes_module aes_instance;
 
-
+/* \brief Receive the 128 bit long UID and return a 32bit version.
+ * \param[in]  long_uid the pointer to the 128bit UID
+ * \param[out] short_uid the pointer to the 32bit short UID
+ * \return     0 for OK
+*/
 uint32_t UID_Gen( uint32_t*long_uid, uint32_t*short_uid)
 {
 	aes_get_config_defaults(&g_aes_cfg);
