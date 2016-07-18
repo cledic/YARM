@@ -3,6 +3,10 @@
  * http://www.acmesystems.it/DAISY-24
 */
 
+//#define EXPANDER_I2C_ADDR       0x27    // PCF8574T
+#define EXPANDER_I2C_ADDR		0x3F	// PCF8574AT
+#define LCD_I2C_ADDR            0x3E //
+
 #ifndef DAISY24_LIB_H_
 #define DAISY24_LIB_H_
 
@@ -14,7 +18,7 @@
 #define PB_DOWN_LEFT	8
 #define PB_DOWN_RIGHT	4
 
-uint32_t Daisy24_LCD_Init(void);
+uint32_t Daisy24_Init( uint8_t i2c_lcd, uint8_t i2c_exp);
 uint32_t Daisy24_Expander_Init(void);
 uint32_t Daisy24_LCD_Clear(void);
 uint32_t Daisy24_LCD_SetCursor( uint8_t x, uint8_t y);
