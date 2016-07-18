@@ -13,7 +13,7 @@ Library to setup the [YARM](http://www.acmesystems.it/yarm) board from [ACME sys
 6. Select "**Project -> ASF Wizard**" from the menu, after a while, on the left side of the window will appear a list of the available modules.
    With the help of the "Search for modules" text box, search and then "Add >>" the following modules:
    * Generic board support (driver)
-   * Delay routines (service) [*cycle*] ((1))
+   * Delay routines (service) [*cycle*] (1)
    * EXTINT - External Interrupt (driver) [*callback*]
    * PORT - GPIO Pin Control (driver)
    * RTC -  Real Time Counter Driver (driver) [*count_callback*]
