@@ -28,6 +28,6 @@ Library to setup the [YARM](http://www.acmesystems.it/yarm) board from [ACME sys
 8. Inside the project window, right click on the "**src**" folder inside the "**Solution Explorer**" window on the right. Choose "**Add -> Existing Item**" to copy the source library inside your project.
 9. Remenber to add inside in "**Properties -> Toolchain -> ARM/GNU Linker -> Miscellaneous**" the option: "**-lc -u _printf_float**" to visualize the float value with "*printf*".
 
-(1) On Atmel Studio 7.0.634 and ASF 3.31.0 set the Delay routines (service) [*systick*]
+^1 On Atmel Studio 7.0.634 and ASF 3.31.0 set the Delay routines (service) [*systick*]
 
 See the PDF file inside the "**doc**" folder for a step by step guide by screenshot.
