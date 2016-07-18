@@ -13,7 +13,7 @@ uint32_t pb;
 int main( void)
 {
     // Init the library: configure the I2C channel and initialize the LCD
-	Daisy24_LCD_Init();
+	Daisy24_Init( LCD_I2C_ADDR, EXPANDER_I2C_ADDR);
 	
     // Just display the "hello world"...
 	Daisy24_LCD_WriteString("Ciao Mondo!");
