@@ -15,10 +15,6 @@
 
 struct i2c_master_module i2c_master_instance;
 
-//#define EXPANDER_I2C_ADDR       0x27    // PCF8574T
-#define EXPANDER_I2C_ADDR     0x3F	// PCF8574AT
-#define LCD_I2C_ADDR            0x3E //
-
 typedef struct _MONITOR {
 	char*p1;
 	char*p2;
@@ -37,6 +33,8 @@ Monitor mn;
  */
 int32_t Daisy24_read_RegisterMultiValue( struct i2c_master_module*module, uint8_t i2c_addr, uint8_t reg, uint8_t *value, const uint16_t n);
 int32_t Daisy24_write_RegisterMultiValue( struct i2c_master_module*module, uint8_t i2c_addr, uint8_t*value, const uint16_t n);
+uint32_t Daisy24_LCD_Init(void);
+void Daisy24_configure_i2c_master(void);
 
 uint32_t			Daisy24_Init_Done=0;
 int32_t				t_fine;
@@ -44,7 +42,9 @@ uint8_t				buffer[4];
 uint8_t				reg_values[4];
 struct i2c_master_packet packet;
 
-void Daisy24_configure_i2c_master(void);
+//
+uint8_t i2c_addr_LCD;
+uint8_t i2c_addr_Exp;
 
 void Daisy24_configure_i2c_master(void)
 {
@@ -62,7 +62,35 @@ void Daisy24_configure_i2c_master(void)
 }
 
 /**
- * \brief Initialize low lever I2C interface and inizialize the LCD
+ * \brief Set both I2C address, initialize low lever I2C interface and LCD
+ *
+ * \param[in] none
+ * \retval 0 OK
+ * \retval return the error code 
+ */
+uint32_t Daisy24_Init( uint8_t i2c_lcd, uint8_t i2c_exp)
+{	
+	uint8_t r;
+	
+	i2c_addr_LCD=i2c_lcd;
+	i2c_addr_Exp=i2c_exp;
+
+	if ( Daisy24_Init_Done==0)
+		Daisy24_configure_i2c_master();
+	
+	Daisy24_Init_Done=1;
+	
+	//
+	r = Daisy24_LCD_Init();
+	if ( r != STATUS_OK) return r;
+	r = Daisy24_Expander_Init();
+	if ( r != STATUS_OK) return r;
+	
+	return 0;
+}
+
+/**
+ * \brief Initialize the LCD
  *
  * \param[in] none
  * \retval 0 OK
@@ -72,38 +100,34 @@ uint32_t Daisy24_LCD_Init(void)
 {
     uint8_t buff[2];
     uint8_t r;
-	
-	if ( Daisy24_Init_Done==0)
-        Daisy24_configure_i2c_master();	
-    Daisy24_Init_Done=1;
-	
+		
     buff[0]=0x00;
     buff[1]=0x38;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
 	if ( r != STATUS_OK) return r;
 	
     buff[1]=0x39;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
 	if ( r != STATUS_OK) return r;
 	
     buff[1]=0x14;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
 	if ( r != STATUS_OK) return r;
 	
     buff[1]=0x72;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
 	if ( r != STATUS_OK) return r;
 	
     buff[1]=0x54;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
 	if ( r != STATUS_OK) return r;
 	
     buff[1]=0x6F;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
 	if ( r != STATUS_OK) return r;
 	
     buff[1]=0x0C;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
     if ( r != STATUS_OK) return r;
 	
 	Daisy24_LCD_Clear();
@@ -146,7 +170,7 @@ uint32_t Daisy24_LCD_Clear(void)
 	
     buff[0]=0x00;
     buff[1]=0x01;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
     if ( r != STATUS_OK) return r;
 	
 	Daisy24_LCD_SetCursor( 0, 0);
@@ -173,7 +197,7 @@ uint32_t Daisy24_LCD_SetCursor( uint8_t x, uint8_t y)
     
     buff[0]=0x00;
     buff[1]=0x80 + (y*0x40) + x;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
     if ( r != STATUS_OK) return r;
 	
     return 0;
@@ -195,7 +219,7 @@ uint32_t Daisy24_LCD_WriteChar( char c)
 	        
     buff[0]=0x40;
     buff[1]=c;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, LCD_I2C_ADDR, &buff[0], 2);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_LCD, &buff[0], 2);
     if ( r != STATUS_OK) return r;
 	
     return 0;
@@ -246,7 +270,7 @@ uint32_t Daisy24_LCD_BkLightOn(void)
         return 1;
 	
     buff[0]=0x10;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, EXPANDER_I2C_ADDR, &buff[0], 1);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_Exp, &buff[0], 1);
     if ( r != STATUS_OK) return r;
 	
     return 0;
@@ -267,7 +291,7 @@ uint32_t Daisy24_LCD_BkLightOff(void)
         return 1;
 	
     buff[0]=0x00;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, EXPANDER_I2C_ADDR, &buff[0], 1);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_Exp, &buff[0], 1);
     if ( r != STATUS_OK) return r;
 	
     return 0;
@@ -478,9 +502,9 @@ uint32_t Daisy24_PB_Status( uint32_t*p)
 		return 1;
     
     buff[0]=0xFF;
-    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, EXPANDER_I2C_ADDR, &buff[0], 1);
+    r=Daisy24_write_RegisterMultiValue( &i2c_master_instance, i2c_addr_Exp, &buff[0], 1);
 	if ( r != STATUS_OK) return r;
-    r=Daisy24_read_RegisterMultiValue( &i2c_master_instance, EXPANDER_I2C_ADDR, 0xFF, &buff[0], 1);
+    r=Daisy24_read_RegisterMultiValue( &i2c_master_instance, i2c_addr_Exp, 0xFF, &buff[0], 1);
     if ( r != STATUS_OK) return r;
 	
 	buff[0] &= 0x0F;
